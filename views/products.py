@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from sqlalchemy.exc import IntegrityError, DatabaseError
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -34,7 +34,8 @@ def get_product(product_id):
 @products_app.route("/add/", methods=["GET", "POST"], endpoint="add")
 def add_product():
     if request.method == "GET":
-        return render_template("products/add.html")
+        last_product_name = session.get("last_product_name", "")
+        return render_template("products/add.html", last_product_name=last_product_name)
 
     product_name = request.form.get("product-name")
     if not product_name:
@@ -42,6 +43,8 @@ def add_product():
 
     product = Product(name=product_name)
     db.session.add(product)
+
+    session["last_product_name"] = product.name
 
     try:
         db.session.commit()

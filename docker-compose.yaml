@@ -23,7 +23,7 @@ services:
       CONFIG_NAME: ProductionConfig
       SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://shop:password@pg:5432/shop
     ports:
-      - "5080:5000"
+      - "5080:80"
     depends_on:
       pg:
         condition: service_healthy

@@ -8,7 +8,7 @@ class BaseConfig:
     # sqla
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///:memory:")
-
+    SECRET_KEY = "abc"
     #
     HOST = "127.0.0.1"
     PORT = 5000
@@ -19,6 +19,7 @@ class ProductionConfig(BaseConfig):
     DEBUG = False
     TESTING = False
     HOST = "0.0.0.0"
+    SECRET_KEY = os.getenv("SECRET_KEY", "sdfsgsrg")
 
 
 class DevelopmentConfig(BaseConfig):
