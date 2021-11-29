@@ -12,7 +12,8 @@ services:
     volumes:
       - ./:/var/app/
     depends_on:
-      - pg
+      pg:
+        condition: service_healthy
 
   shop-prod:
     build:
@@ -24,7 +25,8 @@ services:
     ports:
       - "5080:5000"
     depends_on:
-      - pg
+      pg:
+        condition: service_healthy
 
   pg:
     image: postgres # use latest official postgres version
@@ -32,6 +34,11 @@ services:
       POSTGRES_DB: shop
       POSTGRES_USER: shop
       POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 #    ports:
 #      - "5432:5432"
     volumes:
